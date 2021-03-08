@@ -10,6 +10,6 @@ A simple demo for the paper "Binary Classification from Multiple Unlabeled Datas
 + Seaborn 0.11.1
 
 ## A Demo for MNIST dataset
-You can run an example code of \\[U^m\\]-SSC method on MNIST dataset and spcify the number of U sets.
+You can run an example code of U^m-SSC method on MNIST dataset and spcify the number of U sets.
 
 `python experiment.py --dataset mnist --sets 10`
