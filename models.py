@@ -8,19 +8,18 @@ from keras.layers import Dense, Activation, Input, GlobalAveragePooling2D, Lambd
 from keras.layers import Dropout, Flatten, Conv2D, add, MaxPooling2D
 from keras.optimizers import SGD, Adam
 from keras.layers.normalization import BatchNormalization
-from keras import regularizers, optimizers, initializers
-
-from keras import regularizers, losses, initializers
+from keras import regularizers, optimizers, initializers, losses
 from keras.callbacks import Callback, LearningRateScheduler
 
 from dataset import load_dataset
-from loss import get_forward_loss
+# from loss import get_forward_loss
 from keras.utils.np_utils import to_categorical
 
 class BaseModel():
     def compile_model(self, model, base_mode, Pi, priors_corr, prior_test, mode):
-        training_loss = get_forward_loss(priors_corr)
-        model.compile(loss=training_loss, optimizer=self.optimizer)
+#         training_loss = get_forward_loss(priors_corr)
+#         model.compile(loss=training_loss, optimizer=self.optimizer)
+        model.compile(loss='categorical_crossentropy', optimizer=self.optimizer)
         self.model = model
         self.base_mode = base_mode
 

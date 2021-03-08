@@ -54,10 +54,13 @@ def save_data(args, U_sets, priors_corr, prior_test, np_loss_train, np_loss_test
         os.makedirs(output_dir)
     
     #Save figures
+    plot_curve(np_loss_test, args.epoch, label=args.mode, phase = 'test', dataset=args.dataset)
+    plot_curve(np_loss_train, args.epoch, label=args.mode, phase = 'train', dataset=args.dataset)
     plt.figure(1)
     plt.savefig(output_dir + "test_curve.png",format='png')
     plt.figure(2)
     plt.savefig(output_dir + "train_curve.png",format='png')
+    plt.close('all')
     
     #Save Loss-Epoch Vector
     np.save(output_dir + 'train_loss' + '.npy', np_loss_train)

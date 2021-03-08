@@ -10,10 +10,7 @@ from models import MultiLayerPerceptron
 from dataset import load_dataset, get_U_sets
 import argparse
 import random
-import matplotlib
-import matplotlib.pyplot as plt
 from keras.optimizers import SGD, Adam
-matplotlib.use('Agg')
 
 print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 
@@ -21,7 +18,6 @@ def get_args():
     parser = argparse.ArgumentParser(
         description='UU learning Keras implementation',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-
     
     parser.add_argument('--sets', type=int, default=20)
     parser.add_argument('--sets_sizes')
@@ -42,15 +38,21 @@ def get_args():
     parser.add_argument('--weightdecay', type=float, default=1e-4)
     parser.add_argument('--optimizer',type=str,default='Adam', choices=['Adam', 'SGD'])
     args = parser.parse_args()
-
     return args
 
 def exp(args): 
-    #Get Training Sample
+    #Get Image Data
     x_train, y_train, x_test, y_test, prior_test = load_dataset(args.dataset)
+    
+    #Get Sets Sizes
     args.set_sizes = get_set_sizes(args.sets, len(x_train), args.set_size_gen)
+    
+    #Randomly Generate Priors Pi
     args.Pi = get_Pi(args.sets, args.Pi_gen)
+    
+    #Sample Data According to Pi and Sets Sizes
     U_sets, priors_corr = get_U_sets(args.sets, y_train, args.set_sizes, args.Pi)
+    
     print('Data prepared!')
     print("set_sizes: " + str(args.set_sizes))
     print("test class prior: " + str(prior_test))
@@ -93,10 +95,12 @@ def exp(args):
     plot_curve(np_loss_train, args.epoch, label=args.mode, phase = 'train', dataset=args.dataset)
 
 #---------------------------------------------Save files----------------------------------------------------------------#
-    save_data(args, U_sets, priors_corr, prior_test, np_loss_test, np_loss_train)
+    save_data(args, U_sets, priors_corr, prior_test, np_loss_train, np_loss_test)
                                                                     
 if __name__ == '__main__':
     args = get_args()
+    np.random.seed(100007)
+    tf.random.set_seed(100007)
     print("mode: {}".format(args.mode))
     print("model: {}".format(args.model))
     print("sets: " + str(args.sets))
