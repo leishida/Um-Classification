@@ -26,7 +26,7 @@ def get_args():
     parser.add_argument('--Pi_gen', type=str, default="random", choices=['random'])
     parser.add_argument('--set_size_gen', type=str, default="uniform", choices=['uniform'])
     parser.add_argument('--eps',type=float,default=0)
-    parser.add_argument('--data_gen', type=str, default="random", choices=['random','read'])
+    parser.add_argument('--data_gen', type=str, default="random", choices=['random'])
     
     parser.add_argument('--batchsize', type=int, default=512)
     parser.add_argument('--dataset', type=str, default='mnist', choices=['mnist'])
