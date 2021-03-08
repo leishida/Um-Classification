@@ -11,4 +11,4 @@ A simple demo for the paper "Binary Classification from Multiple Unlabeled Datas
 
 ## A Demo for MNIST dataset
 You can run an example code of U*-SSC method on MNIST dataset and spcify the number of U sets.
-'python experiment.py --dataset mnist --sets 10'
+`python experiment.py --dataset mnist --sets 10`
