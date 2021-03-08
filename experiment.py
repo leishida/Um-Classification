@@ -99,8 +99,6 @@ def exp(args):
                                                                     
 if __name__ == '__main__':
     args = get_args()
-    np.random.seed(100007)
-    tf.random.set_seed(100007)
     print("mode: {}".format(args.mode))
     print("model: {}".format(args.model))
     print("sets: " + str(args.sets))
