@@ -13,3 +13,6 @@ A simple demo for the paper "Binary Classification from Multiple Unlabeled Datas
 You can run an example code of U^m-SSC method on MNIST dataset and spcify the number of U sets.
 
 `python experiment.py --dataset mnist --sets 20`
+
+The output will be in the folder ./output_SSC/mnist/m,
+where m is the number of set of this run.
