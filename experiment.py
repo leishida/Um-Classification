@@ -16,7 +16,7 @@ print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('
 
 def get_args():
     parser = argparse.ArgumentParser(
-        description='UU learning Keras implementation',
+        description='U^m Classification Keras implementation',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     
     parser.add_argument('--sets', type=int, default=20)
