@@ -15,13 +15,13 @@ from dataset import load_dataset
 from keras.utils.np_utils import to_categorical
 
 class BaseModel():
-    def compile_model(self, model, base_mode, Pi, priors_corr, prior_test, mode):
+    def compile_model(self, model, base_model, Pi, priors_corr, prior_test, mode):
         model.compile(loss='categorical_crossentropy', optimizer=self.optimizer)
         self.model = model
-        self.base_mode = base_mode
+        self.base_model = base_model
 
     def fit_model(self, U_sets, x_train_total, batch_size, epochs, x_test, y_test, Pi, priors_corr, prior_test, mode):
-        test_loss = TestLoss(self.base_mode, x_test, y_test, mode)
+        test_loss = TestLoss(self.base_model, x_test, y_test, mode)
         X_train = x_train_total[U_sets[0],:]
         Y_train = np.zeros(len(X_train), dtype=np.int32).reshape(len(X_train), 1)
         for i in range(1, len(Pi)):
@@ -102,13 +102,13 @@ class MultiLayerPerceptron(BaseModel):
         g = Dense(1, use_bias=True,
               kernel_initializer=initializers.lecun_normal(seed=1),
               activation = 'sigmoid',
-              name = "base_mode")(x)
-        base_mode = Model(inputs=input, outputs=g)
+              name = "base_model")(x)
+        base_model = Model(inputs=input, outputs=g)
         g_bar = Lambda(self.adaption_layer, name = "last_layer")(g)
         model = Model(inputs=input, outputs=g_bar)
             
         self.compile_model(model=model,
-                  base_mode=base_mode,
+                  base_model=base_model,
                   Pi=self.Pi,
                   priors_corr = priors_corr,
                   prior_test = prior_test,
@@ -117,8 +117,8 @@ class MultiLayerPerceptron(BaseModel):
         
 # Test risk by 01-loss
 class TestLoss(Callback):
-    def __init__(self, base_mode, x_test, y_test, mode):
-        self.base_mode = base_mode
+    def __init__(self, base_model, x_test, y_test, mode):
+        self.base_model = base_model
         self.x_test = x_test
         self.y_test = y_test
         self.mode = mode
@@ -130,7 +130,7 @@ class TestLoss(Callback):
         perm = np.random.permutation(len(self.x_test))
         self.x_test, self.y_test = self.x_test[perm], self.y_test[perm]
         nb_y_test = np.size(self.y_test)
-        y_test_pred_base = self.base_mode.predict(self.x_test, batch_size=1000)
+        y_test_pred_base = self.base_model.predict(self.x_test, batch_size=1000)
         y_test_pred = (y_test_pred_base >= 1/2) + 0
         test_loss = np.sum(np.not_equal(y_test_pred, self.y_test).astype(np.int32)) / nb_y_test
         self.test_losses.append(test_loss)
